@@ -1,0 +1,16 @@
+version: "3.1"
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+  worker_1:
+    build: .
+    ports:
+        - "5001:5001"
+  worker_2:
+    build: .
+    ports:
+      - "5002:5002"
+  redis:
+    image: "redis:alpine"

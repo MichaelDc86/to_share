@@ -1,0 +1,7 @@
+app:
+  debug: False
+  log_level: 'INFO'
+celery:
+  timezone: 'UTC'
+  broker_url: 'redis://:hackme@localhost:6379/0'
+  result_backend: 'redis://:hackme@localhost:6379/0'
