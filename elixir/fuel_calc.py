@@ -112,7 +112,10 @@ class SpaceProgram:
         return fuel_mass
 
 
-if __name__ == '__main__':
+def print_examples() -> None:
+    """
+    Prints examples given in the task
+    """
     apollo_11 = SpaceProgram(route=[('earth', 'moon'), ('moon', 'earth')], ship_weight=28801)
     mars = SpaceProgram(route=[('earth', 'mars'), ('mars', 'earth')], ship_weight=14606)
     passenger = SpaceProgram(route=[('earth', 'moon'), ('moon', 'mars'), ('mars', 'earth')], ship_weight=75432)
@@ -122,3 +125,51 @@ if __name__ == '__main__':
     print(f'Apollo_11 Space journey will take {answer_apollo_11} kg of fuel! --> 51898')
     print(f'Mars Space journey will take {answer_mars} kg of fuel! --> 33388')
     print(f'Passenger Space journey will take {answer_passenger} kg of fuel! --> 212161')
+
+
+def app() -> None:
+    """
+    Interacts with user, builds the SpaceProgram and calculates sufficient fuel for travel
+    """
+    input_dict = {
+        '1': 'earth',
+        '2': 'moon',
+        '3': 'mars',
+    }
+    print('*********************')
+    print('Specify your space journey!')
+    while True:
+        ship_weight = input('Print your equipment/spaceship weight in kg: ')
+        try:
+            ship_weight = int(ship_weight)
+            break
+        except ValueError:
+            print(f'Value {ship_weight} is not an integer. Please input integer value of your ship weight!')
+    route = []
+    while True:
+        while True:
+            print('Choose start planet:\n1 - Earth\n2 - Moon\n3 - Mars')
+            launch = input('Print the number from the list above:  ')
+            launch = input_dict.get(launch)
+            if launch:
+                break
+            print('Please choose from listed planets!(digits 1, 2 or 3)')
+        while True:
+            print('Choose destination planet:\n1 - Earth\n2 - Moon\n3 - Mars')
+            land = input('Print the number from the list above:  ')
+            land = input_dict.get(land)
+            if land:
+                break
+            print('Please choose from listed planets!(digits 1, 2 or 3)')
+        route.append((launch, land))
+        stop = input('Do you want to add new trip to your route? Print Y - yes, N - no: ')
+        if stop.lower() != 'y':
+            break
+    user_program = SpaceProgram(route=route, ship_weight=ship_weight)
+    answer_user_program = user_program.calculate_fuel()
+    print(f'Your Space journey will take {answer_user_program} kg of fuel!')
+
+
+if __name__ == '__main__':
+    print_examples()
+    app()
