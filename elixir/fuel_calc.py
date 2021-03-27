@@ -69,7 +69,7 @@ class SpaceProgram:
             travel_routes.append((item[1], self.land_gravity_constant, self.land_constant))
 
         tmp_mass = mass
-        # reverse because with init mass ship will finish trip and max mass will be at start
+        # reverse travel_routes because with init mass ship will finish trip and max mass will be at start
         for gravity, gravity_constant, direction_constant in travel_routes[::-1]:
             tmp_fuel_mass = self.count_fuel_per_mass(
                 mass=tmp_mass,
@@ -96,10 +96,11 @@ class SpaceProgram:
         """
         fuel_mass = 0
         tmp_mass = mass
-        while tmp_mass > 0:
+        while True:
             tmp_mass = int(tmp_mass * gravity * gravity_constant - direction_constant)  # int because round down
-            if tmp_mass >= 0:
-                fuel_mass += tmp_mass
+            if tmp_mass <= 0:
+                break
+            fuel_mass += tmp_mass
 
         return fuel_mass
 
