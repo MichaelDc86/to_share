@@ -12,7 +12,14 @@ class PlanetGravity(Enum):
 
 
 class SpaceProgram:
-    """Space Program class"""
+    """
+    Space Program class
+    Example:
+        Program Apollo 11
+        apollo_11 = SpaceProgram(route=[('earth', 'moon'), ('moon', 'earth')], ship_weight=28801)
+        route -> launch from Earth, land on Moon, then back(launch from Moon and land on Earth),
+        ship_weight -> weight of equipment
+    """
     launch_constant: int = 33
     land_constant: int = 42
     launch_gravity_constant: Decimal = Decimal('0.042')
@@ -50,9 +57,9 @@ class SpaceProgram:
                 route.append((launch, land))
             else:
                 return 0
-        return self.amount_calculate(mass=self.ship_weight, route=route)
+        return self._amount_calculate(mass=self.ship_weight, route=route)
 
-    def amount_calculate(
+    def _amount_calculate(
             self, mass: int, route: List[Tuple[Decimal, Decimal]]) -> int:
         """
         Method to calculate the fuel amount for journey from one planet to another and back.
@@ -71,7 +78,7 @@ class SpaceProgram:
         tmp_mass = mass
         # reverse travel_routes because with init mass ship will finish trip and max mass will be at start
         for gravity, gravity_constant, direction_constant in travel_routes[::-1]:
-            tmp_fuel_mass = self.count_fuel_per_mass(
+            tmp_fuel_mass = self._count_fuel_per_mass(
                 mass=tmp_mass,
                 gravity=gravity,
                 gravity_constant=gravity_constant,
@@ -81,7 +88,7 @@ class SpaceProgram:
         return tmp_mass - mass
 
     @staticmethod
-    def count_fuel_per_mass(
+    def _count_fuel_per_mass(
             mass: int, gravity: Decimal, gravity_constant: Decimal, direction_constant: int) -> int:
         """
         Calculate fuel using simple formula
@@ -106,12 +113,12 @@ class SpaceProgram:
 
 
 if __name__ == '__main__':
-    fuel_apollo_11 = SpaceProgram(route=[('earth', 'moon'), ('moon', 'earth')], ship_weight=28801)
-    fuel_mars = SpaceProgram(route=[('earth', 'mars'), ('mars', 'earth')], ship_weight=14606)
-    fuel_passenger = SpaceProgram(route=[('earth', 'moon'), ('moon', 'mars'), ('mars', 'earth')], ship_weight=75432)
-    answer_apollo_11 = fuel_apollo_11.calculate_fuel()
-    answer_mars = fuel_mars.calculate_fuel()
-    answer_passenger = fuel_passenger.calculate_fuel()
+    apollo_11 = SpaceProgram(route=[('earth', 'moon'), ('moon', 'earth')], ship_weight=28801)
+    mars = SpaceProgram(route=[('earth', 'mars'), ('mars', 'earth')], ship_weight=14606)
+    passenger = SpaceProgram(route=[('earth', 'moon'), ('moon', 'mars'), ('mars', 'earth')], ship_weight=75432)
+    answer_apollo_11 = apollo_11.calculate_fuel()
+    answer_mars = mars.calculate_fuel()
+    answer_passenger = passenger.calculate_fuel()
     print(f'Apollo_11 Space journey will take {answer_apollo_11} kg of fuel! --> 51898')
     print(f'Mars Space journey will take {answer_mars} kg of fuel! --> 33388')
     print(f'Passenger Space journey will take {answer_passenger} kg of fuel! --> 212161')
